@@ -1,0 +1,82 @@
+<html>
+<head>
+    <style>
+        body{
+             background-size:100% 100%;
+             text-align:center;
+             align-items:center;
+             padding:100px;
+             justify-content:center;
+             letter-spacing:1px;
+             font-size:30px;
+             font-weight:bold;
+        }h1,span,u{
+            display:block;
+        }button,input{
+            width:30%;
+            height:50px;
+            border-radius:30px;
+            background-color: transparent;
+            margin-bottom:20px;
+            font-size:30px;
+            text-align:center;
+            box-shadow:0px 0px 10px black;
+        }button:hover{
+            background-color:skyblue;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body background="WeatherImage.jpg">
+    
+    <h1>WEATHER APP</h1><br>
+    <input type="search" placeholder="Enter City Name"><br>
+    <button>Get Weather</button>
+    <div>
+        <u><span></span></u>
+        <u><span></span></u>
+        <u><span></span></u>
+        <u><span></span></u>
+        <u><span></span></u>
+        <u><span></span></u>
+        <u><span></span></u>
+    </div>
+  <audio src=""></audio>
+
+    <script>
+       
+        document.querySelector("button").addEventListener('click',() => {
+               let city = document.querySelector("input").value;
+               fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=d5fbce3cfa0694eaaf3cd9b43966b6ec`)
+                  .then( (data) => {
+                     return data.json();
+                   }).then( (api) => {
+                    let cityName = {
+                          CityName : api.name,
+                          CountryCode : api.sys.country,
+                          Temperature : Math.floor(api.main.temp-273.15)+" deg",
+                          Humidity : api.main.humidity+"%",
+                          Weather : `${api.weather[0].main} ${api.weather[0].icon}`,
+                          AirPressure : api.main.pressure+" hPa",
+                          WindSpeed : api.wind.speed+" m/s"
+                    };  
+                   let index = 0;
+                   for(name in cityName){
+                      document.querySelector("div").children[index++].innerText = `${name} : ${cityName[name]}`;
+                   } 
+             }).catch( () => {
+                if(speechSynthesis){
+                var vls = new SpeechSynthesisUtterance();
+                vls.language="en-us";
+                vls.text="soory amit,city name is not found , please enter valid city name";
+                vls.volume=1;
+                vls.rate=0.67;
+                vls.pitch=1;
+                window.speechSynthesis.speak(vls);
+            }
+             });  
+     });
+       
+    </script>
+</body>
+</html>
