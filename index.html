@@ -60,6 +60,7 @@
                           AirPressure : api.main.pressure+" hPa",
                           WindSpeed : api.wind.speed+" m/s"
                     };  
+                        console.log(api.name,api.sys.country);
                    let index = 0;
                    for(name in cityName){
                       document.querySelector("div").children[index++].innerText = `${name} : ${cityName[name]}`;
